@@ -14,7 +14,6 @@
 #define RTXDI_PT_TEMPORAL_RESAMPLING_HLSLI
 
 #include "Rtxdi/Utils/Math.hlsli"
-#define RTXDI_RESTIR_PT_HYBRID_SHIFT
 #include "Rtxdi/PT/HybridShift.hlsli"
 #include "Rtxdi/Utils/Checkerboard.hlsli"
 

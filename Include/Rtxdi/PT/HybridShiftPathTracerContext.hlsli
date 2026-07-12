@@ -20,17 +20,20 @@
 
 struct RTXDI_HybridShiftPathTracerContext
 {
+    MUTATING
     void SetBrdfRaySample(RTXDI_BrdfRaySample raySample)
     {
         ptState.brdfRaySample = raySample;
         SetContinuationRayBrdfOverPdf(raySample.BrdfTimesNoL / raySample.OutPdf);
     }
 
+    MUTATING
     void SetMaxPathBounce(uint16_t newMax)
     {
         ptState.maxPathBounce = newMax;
     }
 
+    MUTATING
     void SetMaxRcVertexLengthIfUnset(uint16_t newMax)
     {
         // Not applicable to hybrid shift
@@ -45,17 +48,20 @@ struct RTXDI_HybridShiftPathTracerContext
     {
     }
 
+    MUTATING
     void MultiplyPathThroughput(float3 multiplicationFactor)
     {
         ptState.pathThroughput *= multiplicationFactor;
     }
 
+    MUTATING
     void SetContinuationRay(RayDesc cr)
     {
         ptState.ContinuationRay = cr;
     }
 
     // Record data before tracing the continuation ray
+    MUTATING
     bool AnalyzePathReconnectibilityBeforeTrace()
     {
         if (ptState.IsLastVertexRough() && ptState.IsLastVertexFar())
@@ -95,11 +101,13 @@ struct RTXDI_HybridShiftPathTracerContext
         return !IsPathTerminated();
     }
 
+    MUTATING
     void SetTraceResult(RAB_RayPayload rp)
     {
         ptState.TraceResult = rp;
     }
 
+    MUTATING
     void RecordPathIntersection(const RAB_Surface intersectionSurface)
     {
         ptState.intersectionSurface = intersectionSurface;
@@ -185,6 +193,7 @@ struct RTXDI_HybridShiftPathTracerContext
         return ptState.bounceDepth == ptState.maxPathBounce;
     }
 
+    MUTATING
     bool RecordEmissiveLightSample(float3 radianceFromEmissiveSurface, RAB_Surface prevSurface, inout RTXDI_RandomSamplerState RandContext)
     {
         // Check invertibility conditions since we have arrived at the last vertex in random replay
@@ -215,11 +224,13 @@ struct RTXDI_HybridShiftPathTracerContext
         return false;
     }
 
+    MUTATING
     void RecordPathRadianceMiss(inout RTXDI_RandomSamplerState rng)
     {
         ptState.SetPathTermination(true);
     }
 
+    MUTATING
     bool RecordEnvironmentMapLightSample(const float3 environmentMapRadiance,
                                          RAB_Surface prevSurface,
                                          inout RTXDI_RandomSamplerState rng)
@@ -308,11 +319,13 @@ struct RTXDI_HybridShiftPathTracerContext
         return RcPrevSurface;
     }
 
+    MUTATING
     void SetRcVertexLength(uint length)
     {
         RcVertexLength = length;
     }
 
+    MUTATING
     void SetSelectedPathLength(uint length)
     {
         SelectedPathLength = length;
@@ -363,6 +376,7 @@ struct RTXDI_HybridShiftPathTracerContext
         return ptState.continuationRayBrdfOverPdf;
     }
 
+    MUTATING
     void SetContinuationRayBrdfOverPdf(float3 brdfOverPdf)
     {
         ptState.continuationRayBrdfOverPdf = brdfOverPdf;
@@ -383,6 +397,7 @@ struct RTXDI_HybridShiftPathTracerContext
         return ptState.TraceResult;
     }
 
+    MUTATING
     void IncreaseBounceDepth()
     {
         ptState.bounceDepth++;
@@ -410,6 +425,7 @@ struct RTXDI_HybridShiftPathTracerContext
 
     // Reset partial state for the next path
     // Merged implementation from FReSTIRPTPathTracerStateBase
+    MUTATING
     void BeginPathState()
     {
         ptState.BeginPathState();
@@ -417,6 +433,7 @@ struct RTXDI_HybridShiftPathTracerContext
 
     // Hybrid shift functions
 
+    MUTATING
     void SetPathTermination(bool Value)
     {
         ptState.SetPathTermination(Value);
@@ -429,6 +446,7 @@ struct RTXDI_HybridShiftPathTracerContext
 
     // PT Base Functions
 
+    MUTATING
     void SetIsLastVertexFar(bool Value)
     {
         ptState.SetIsLastVertexFar(Value);
@@ -439,6 +457,7 @@ struct RTXDI_HybridShiftPathTracerContext
         return ptState.IsLastVertexFar();
     }
 
+    MUTATING
     void SetIsLastVertexRough(bool Value)
     {
         ptState.SetIsLastVertexRough(Value);

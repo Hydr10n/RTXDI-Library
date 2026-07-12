@@ -48,11 +48,13 @@ struct RTXDI_PathTracerContext
     // The RTXDI_BrdfRaySample contains all the information about
     // the outgoing ray from surface N to surface N+1
     //
+    MUTATING
     void SetBrdfRaySample(RTXDI_BrdfRaySample brs)
     {
         ctx.SetBrdfRaySample(brs);
     }
 
+    MUTATING
     void SetMaxPathBounce(uint16_t newMax)
     {
         ctx.SetMaxPathBounce(newMax);
@@ -69,6 +71,7 @@ struct RTXDI_PathTracerContext
     // Useful for selectively increasing the rc vertex length
     // for mirror bounces.
     //
+    MUTATING
     void SetMaxRcVertexLengthIfUnset(uint16_t newMax)
     {
         ctx.SetMaxRcVertexLengthIfUnset(newMax);
@@ -87,6 +90,7 @@ struct RTXDI_PathTracerContext
     // The context needs to know about the Russian roulette
     // continuation probability to keep resampling unbiased
     //
+    MUTATING
     void RecordRussianRouletteProbability(float RRProb)
     {
         ctx.RecordRussianRouletteProbability(RRProb);
@@ -97,6 +101,7 @@ struct RTXDI_PathTracerContext
     //
     // Call after CalculateBRDFOverPDF with the appropriate result
     //
+    MUTATING
     void MultiplyPathThroughput(float3 multiplicationFactor)
     {
         ctx.MultiplyPathThroughput(multiplicationFactor);
@@ -106,6 +111,7 @@ struct RTXDI_PathTracerContext
     // Sets the outgoing ray direction for the path tracer from the
     //     current surface.
     //
+    MUTATING
     void SetContinuationRay(RayDesc cr)
     {
         ctx.SetContinuationRay(cr);
@@ -124,6 +130,7 @@ struct RTXDI_PathTracerContext
     // Returns fails if the path is invalid and the path tracer should
     //     exit.
     //
+    MUTATING
     bool AnalyzePathReconnectibilityBeforeTrace()
     {
         return ctx.AnalyzePathReconnectibilityBeforeTrace();
@@ -132,6 +139,7 @@ struct RTXDI_PathTracerContext
     //
     // Call after AnalyzePathReconnectibilityBeforeTrace
     //
+    MUTATING
     void SetTraceResult(RAB_RayPayload rp)
     {
         ctx.SetTraceResult(rp);
@@ -143,6 +151,7 @@ struct RTXDI_PathTracerContext
     // Call this function when the ray traced from surface N hits surface N + 1
     // Do not call this function when the ray misses
     //
+    MUTATING
     void RecordPathIntersection(const RAB_Surface intersectionSurface)
     {
         ctx.RecordPathIntersection(intersectionSurface);
@@ -166,6 +175,7 @@ struct RTXDI_PathTracerContext
     //     RecordPathIntersection() for tracking reconnection data.
     // Call after RecordPathIntersection()
     //
+    MUTATING
     bool RecordEmissiveLightSample(float3 radianceFromEmissiveSurface, RAB_Surface prevSurface, inout RTXDI_RandomSamplerState RandContext)
     {
         return ctx.RecordEmissiveLightSample(radianceFromEmissiveSurface, prevSurface, RandContext);
@@ -186,6 +196,7 @@ struct RTXDI_PathTracerContext
     //
     // Call after RecordPathIntersection with the results of the path tracer's NEE routine
     //
+    MUTATING
     bool RecordNeeLightSample(in const RTXDI_SampledLightData sampledLightData,
                               in const float3 radianceFromLights,
                               in const float neePdf,
@@ -196,11 +207,13 @@ struct RTXDI_PathTracerContext
         return ctx.RecordNeeLightSample(sampledLightData, radianceFromLights, neePdf, scatterPdf, lightSample, randContext);
     }
 
+    MUTATING
     void RecordPathRadianceMiss(inout RTXDI_RandomSamplerState rng)
     {
         ctx.RecordPathRadianceMiss(rng);
     }
 
+    MUTATING
     bool RecordEnvironmentMapLightSample(const float3 environmentMapRadiance,
                                          RAB_Surface prevSurface,
                                          inout RTXDI_RandomSamplerState rng)
@@ -213,6 +226,7 @@ struct RTXDI_PathTracerContext
         return ctx.calculateRISWeight(targetFunctionOverP);
     }
 
+    MUTATING
     bool RISStreamPathSample(uint PathLength,
                              float3 CurrentLightRadiance,
                              inout RTXDI_RandomSamplerState rng,
@@ -274,6 +288,7 @@ struct RTXDI_PathTracerContext
         return ctx.GetTraceResult();
     }
 
+    MUTATING
     void IncreaseBounceDepth()
     {
         ctx.IncreaseBounceDepth();
@@ -378,11 +393,13 @@ struct RTXDI_PathTracerContext
         return ctx.GetRcPrevSurface();
     }
 
+    MUTATING
     void SetRcVertexLength(uint length)
     {
         ctx.SetRcVertexLength(length);
     }
 
+    MUTATING
     void SetSelectedPathLength(uint length)
     {
         ctx.SetSelectedPathLength(length);
@@ -397,6 +414,7 @@ struct RTXDI_PathTracerContext
         return ctx.IsSecondaryBounce();
     }
 
+    MUTATING
     // Reset partial state for the next path
     void BeginPathState()
     {
@@ -405,6 +423,7 @@ struct RTXDI_PathTracerContext
 
     // Hybrid shift functions
 
+    MUTATING
     void SetPathTermination(bool Value)
     {
         ctx.SetPathTermination(Value);
@@ -417,6 +436,7 @@ struct RTXDI_PathTracerContext
 
     // PT Base Functions
 
+    MUTATING
     void SetIsLastVertexFar(bool Value)
     {
         ctx.SetIsLastVertexFar(Value);
@@ -427,6 +447,7 @@ struct RTXDI_PathTracerContext
         return ctx.IsLastVertexFar();
     }
 
+    MUTATING
     void SetIsLastVertexRough(bool Value)
     {
         ctx.SetIsLastVertexRough(Value);

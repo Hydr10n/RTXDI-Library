@@ -20,17 +20,20 @@
 
 struct RTXDI_InitialSamplingPathTracerContext
 {
+    MUTATING
     void SetBrdfRaySample(RTXDI_BrdfRaySample raySample)
     {
         ptState.brdfRaySample = raySample;
         SetContinuationRayBrdfOverPdf(raySample.BrdfTimesNoL / raySample.OutPdf);
     }
 
+    MUTATING
     void SetMaxPathBounce(uint16_t newMax)
     {
         ptState.maxPathBounce = newMax;
     }
 
+    MUTATING
     void SetMaxRcVertexLengthIfUnset(uint16_t newMax)
     {
         if(!FoundRcVertex)
@@ -42,21 +45,25 @@ struct RTXDI_InitialSamplingPathTracerContext
         return ptState.bounceDepth != ptState.initialBounceDepth;
     }
 
+    MUTATING
     void RecordRussianRouletteProbability(float RRProb)
     {
         RussianRoulettePdf *= RRProb;
     }
-    
+
+    MUTATING
     void MultiplyPathThroughput(float3 multiplicationFactor)
     {
         ptState.pathThroughput *= multiplicationFactor;
     }
 
+    MUTATING
     void SetContinuationRay(RayDesc cr)
     {
         ptState.ContinuationRay = cr;
     }
 
+    MUTATING
     bool AnalyzePathReconnectibilityBeforeTrace()
     {
         if (ptState.NoMainPathRcVertex())
@@ -121,17 +128,20 @@ struct RTXDI_InitialSamplingPathTracerContext
         return !IsPathTerminated();
     }
 
+    MUTATING
     void SetTraceResult(RAB_RayPayload rp)
     {
         ptState.TraceResult = rp;
     }
 
+    MUTATING
     void SetIntersectionSurface(const RAB_Surface intersectionSurface)
     {
         ptState.intersectionSurface = intersectionSurface;
         RAB_SetSurfaceNormal(ptState.intersectionSurface, normalize(RAB_GetSurfaceNormal(ptState.intersectionSurface)));
     }
 
+    MUTATING
     void UpdateReconnectionStateForPathIntersection()
     {
         // compute the V_prev->V ray footprint, if it is above threshold, we mark last vertex as "far"
@@ -147,6 +157,7 @@ struct RTXDI_InitialSamplingPathTracerContext
         }
     }
 
+    MUTATING
     void RecordPathIntersection(const RAB_Surface intersectionSurface)
     {
         SetIntersectionSurface(intersectionSurface);
@@ -158,6 +169,7 @@ struct RTXDI_InitialSamplingPathTracerContext
         return true;
     }
 
+    MUTATING
     bool RecordEmissiveLightSample(float3 radianceFromEmissiveSurface, RAB_Surface prevSurface, inout RTXDI_RandomSamplerState RandContext)
     {
         const uint RcVertexLength = (ptState.NoMainPathRcVertex() && ptState.IsLastVertexFar()) ? ptState.bounceDepth : ptState.RcVertexLength;
@@ -182,6 +194,7 @@ struct RTXDI_InitialSamplingPathTracerContext
         return true;
     }
 
+    MUTATING
     bool RecordNeeLightSample(in const RTXDI_SampledLightData sampledLightData,
                               in const float3 radianceFromLights,
                               in const float neePdf,
@@ -258,11 +271,13 @@ struct RTXDI_InitialSamplingPathTracerContext
         return Selected;
     }
 
+    MUTATING
     void RecordPathRadianceMiss(inout RTXDI_RandomSamplerState rng)
     {
         ptState.SetPathTermination(true);
     }
 
+    MUTATING
     bool RecordEnvironmentMapLightSample(const float3 environmentMapRadiance,
                                          RAB_Surface prevSurface,
                                          inout RTXDI_RandomSamplerState rng)
@@ -294,6 +309,7 @@ struct RTXDI_InitialSamplingPathTracerContext
         return risWeight;
     }
 
+    MUTATING
     bool RISStreamPathSample(uint PathLength,
                              float3 CurrentLightRadiance,
                              inout RTXDI_RandomSamplerState rng,
@@ -454,6 +470,7 @@ struct RTXDI_InitialSamplingPathTracerContext
     }
 
 
+    MUTATING
     void SetContinuationRayBrdfOverPdf(float3 brdfOverPdf)
     {
         ptState.continuationRayBrdfOverPdf = brdfOverPdf;
@@ -483,6 +500,7 @@ struct RTXDI_InitialSamplingPathTracerContext
 
 
 
+    MUTATING
     void IncreaseBounceDepth()
     {
         ptState.bounceDepth++;
@@ -509,6 +527,7 @@ struct RTXDI_InitialSamplingPathTracerContext
     }
 
     // Reset partial state for the next path
+    MUTATING
     void BeginPathState()
     {
         ptState.BeginPathState();
@@ -516,6 +535,7 @@ struct RTXDI_InitialSamplingPathTracerContext
 
     // Hybrid shift functions
 
+    MUTATING
     void SetPathTermination(bool Value)
     {
         ptState.SetPathTermination(Value);
@@ -528,6 +548,7 @@ struct RTXDI_InitialSamplingPathTracerContext
 
     // PT Base Functions
 
+    MUTATING
     void SetIsLastVertexFar(bool Value)
     {
         ptState.SetIsLastVertexFar(Value);
@@ -538,6 +559,7 @@ struct RTXDI_InitialSamplingPathTracerContext
         return ptState.IsLastVertexFar();
     }
 
+    MUTATING
     void SetIsLastVertexRough(bool Value)
     {
         ptState.SetIsLastVertexRough(Value);

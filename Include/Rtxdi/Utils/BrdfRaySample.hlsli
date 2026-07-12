@@ -14,6 +14,7 @@
 #define RTXDI_BRDF_RAY_SAMPLE_HLSLI
 
 #include "rtxdi/Utils/Math.hlsli"
+#include "rtxdi/Utils/Slang.hlsli"
 
 #define RTXDI_BrdfRaySampleProperties_ContinuousDelta_Bit 0
 #define RTXDI_BrdfRaySampleProperties_DiffuseSpecular_Bit 1
@@ -23,52 +24,67 @@ struct RTXDI_BrdfRaySampleProperties
 {
     uint flags;
 
+    MUTATING
     void SetContinuous()
     {
         SetBit(flags, RTXDI_BrdfRaySampleProperties_ContinuousDelta_Bit, 0);
     }
+
     bool IsContinuous()
     {
         return !GetBit(flags, RTXDI_BrdfRaySampleProperties_ContinuousDelta_Bit);
     }
+
+    MUTATING
     void SetDelta()
     {
         SetBit(flags, RTXDI_BrdfRaySampleProperties_ContinuousDelta_Bit, 1);
     }
+
     bool IsDelta()
     {
         return GetBit(flags, RTXDI_BrdfRaySampleProperties_ContinuousDelta_Bit);
     }
 
+    MUTATING
     void SetDiffuse()
     {
         SetBit(flags, RTXDI_BrdfRaySampleProperties_DiffuseSpecular_Bit, 0);
     }
+
     bool IsDiffuse()
     {
         return !GetBit(flags, RTXDI_BrdfRaySampleProperties_DiffuseSpecular_Bit);
     }
+
+    MUTATING
     void SetSpecular()
     {
         SetBit(flags, RTXDI_BrdfRaySampleProperties_DiffuseSpecular_Bit, 1);
     }
+
     bool IsSpecular()
     {
         return GetBit(flags, RTXDI_BrdfRaySampleProperties_DiffuseSpecular_Bit);
     }
 
+    MUTATING
     void SetReflection()
     {
         SetBit(flags, RTXDI_BrdfRaySampleProperties_ReflectionTransmission_Bit, 0);
     }
+
     bool IsReflection()
     {
         return !GetBit(flags, RTXDI_BrdfRaySampleProperties_ReflectionTransmission_Bit);
     }
+
+    MUTATING
     void SetTransmission()
     {
         SetBit(flags, RTXDI_BrdfRaySampleProperties_ReflectionTransmission_Bit, 1);
     }
+
     bool IsTransmission()
     {
         return GetBit(flags, RTXDI_BrdfRaySampleProperties_ReflectionTransmission_Bit);
